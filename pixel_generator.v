@@ -26,27 +26,32 @@ module pixel_generator(
 	input active,
 	input [15:0] vga_data,
 	output reg [7:0] color,
-	output reg [15:0] vga_addr
+	output [14:0] vga_addr
     );
 	 
 	 reg [7:0] checkerboard;
 	 reg [30:0] seed; 
 	 initial seed = 17;
 	 
-	 wire [15:0] char_addr;
-	 reg [7:0] glyph;
-	 reg [7:0] creative;
-	 wire [15:0] glyph_addr;
+	 wire [14:0] char_addr;
+	 wire [7:0] glyph;
+	 wire [7:0] creative;
+	 wire [14:0] glyph_addr;
 	 wire pixel_en;
-	 reg [15:0] glyph_bits;
+	 wire [15:0] glyph_bits;
 	 
-	 compute_char_addr compute_char_add(pixel_counter, line_counter, char_addr);
+	 compute_char_addr compute_char_add(pixel_counter, line_counter, char_addr);	 
 	 
 	 compute_glyph_addr compute_glyph_add(glyph, line_counter, glyph_addr);
 	 
 	 extract_pixel extract_pix(glyph_bits, pixel_counter, line_counter, pixel_en);
 
-	 always@(posedge clk)
+	 assign vga_addr = (pixel_state == 3'b0 ? char_addr : glyph_addr);
+	 assign glyph = vga_data[7:0];
+	 assign creative = vga_data[15:8];
+	 assign glyph_bits = vga_data;
+
+	 /*always@(posedge clk)
 	 begin
 		if(pixel_state == 0) begin
 			vga_addr = char_addr;		
@@ -60,7 +65,7 @@ module pixel_generator(
 			glyph_bits = vga_data;
 		end
 		
-	 end
+	 end*/
 	 
 	 
 	//this is just for filler until we have the real thing

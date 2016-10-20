@@ -24,7 +24,7 @@ module VGA_top(
 		output Hsync,
 		output Vsync,
 		output [7:0] colorOut,
-		output [15:0] vgaAddress
+		output [14:0] vgaAddress
 		);
 		
 		wire [9:0] line_counter;

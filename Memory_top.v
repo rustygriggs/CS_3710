@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 module Memory_top(
 	input clk,
-	input [15:0] vga_addr,
+	input [14:0] vga_addr,
 	output [15:0] vga_data
     );
 	
