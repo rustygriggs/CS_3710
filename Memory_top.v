@@ -24,7 +24,7 @@ module Memory_top(
 	output [15:0] vga_data
     );
 	
-	block_ram1 block_RAM_1(.clka(clk), .addra(vga_addr[15:0]), .douta(vga_data[15:0]), .wea(1'b0),
-		  					  .dina(16'd0), .clkb(clk), .web(1'b0), .dinb(16'd0), .addrb(13'd0));
+	block_ram1 block_RAM_1(.clka(clk), .addra(vga_addr[14:0]), .douta(vga_data[15:0]), .wea(1'b0),
+		  					  .dina(16'd0), .clkb(clk), .web(1'b0), .dinb(16'd0), .addrb(15'd0));
 
 endmodule

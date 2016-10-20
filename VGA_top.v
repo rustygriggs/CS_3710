@@ -34,7 +34,7 @@ module VGA_top(
 		wire [7:0] colorIntermediate;		
 		
 		VGA_counters count(clk, pixel_counter, line_counter, pixel_state, active);
-		pixel_generator pixelGen(clk, pixel_counter, line_counter, active, colorIntermediate);
+		pixel_generator pixelGen(clk, pixel_state, pixel_counter, line_counter, active, vgaData, colorIntermediate, vgaAddress);
 		VGA_output VGA_out(clk, pixel_counter, line_counter, pixel_state, active, colorIntermediate, Hsync, Vsync, colorOut);
 
 		

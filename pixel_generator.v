@@ -19,12 +19,12 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module pixel_generator(
-	input [15:0] vga_data,
-	input pixel_state,
 	input clk,
+	input [1:0] pixel_state,
 	input [9:0] pixel_counter,
 	input [9:0] line_counter,
 	input active,
+	input [15:0] vga_data,
 	output reg [7:0] color,
 	output reg [15:0] vga_addr
     );
