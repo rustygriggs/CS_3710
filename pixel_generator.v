@@ -46,7 +46,7 @@ module pixel_generator(
 	 
 	 extract_pixel extract_pix(glyph_bits, pixel_counter, line_counter, pixel_en);
 
-	 assign vga_addr = (pixel_state == 3'b0 ? char_addr : glyph_addr);
+	 assign vga_addr = (pixel_state == 0 ? char_addr : glyph_addr);
 	 assign glyph = vga_data[7:0];
 	 assign creative = vga_data[15:8];
 	 assign glyph_bits = vga_data;
@@ -79,8 +79,12 @@ module pixel_generator(
 	 //light up the right pixel
 	 always @ (posedge clk) begin
 		 if (active) begin
+			//if (line_counter[7:0] == creative) begin
+			//	color = 8'd255;
+			//end
+			//else
 			if (!pixel_en) begin
-				color = creative;
+				color = 8'b11111111;
 			end
 			else begin
 				color = 8'b00000000;

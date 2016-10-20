@@ -24,6 +24,6 @@ module compute_char_addr(
 	output [14:0] char_addr
     );
 	
-	assign char_addr = {2'd0, line_counter[8:3], pixel_counter[9:3]} + 15'h480;
+	assign char_addr = {2'd0, line_counter[8:3], pixel_counter[9:3]} + 15'h5FF;
 
 endmodule
