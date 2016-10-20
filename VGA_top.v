@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module VGA_top(
-		input externalClk,
+		input clk,
 		input [7:0] sw,
 		input [15:0] vgaData,
 		output Hsync,
@@ -32,11 +32,7 @@ module VGA_top(
 		wire [1:0] pixel_state;
 		wire [9:0] pixel_counter;
 		wire active;
-		wire [7:0] colorIntermediate;
-		
-		IBUFG pad_to_clock_logic(.I(externalClk), .O(internalClk));
-		BUFG clock_logic_to_clk(.I(internalClk), .O(clk));
-		
+		wire [7:0] colorIntermediate;		
 		
 		VGA_counters count(clk, pixel_counter, line_counter, pixel_state, active);
 		pixel_generator pixelGen(clk, pixel_counter, line_counter, active, sw, colorIntermediate);
