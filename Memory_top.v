@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    18:51:52 09/19/2016 
+// Create Date:    20:56:29 10/19/2016 
 // Design Name: 
-// Module Name:    compute_char_addr 
+// Module Name:    Memory_top 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,12 +18,13 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module compute_char_addr(
-	input [9:0] pixel_counter,
-	input [9:0] line_counter,
-	output [15:0] char_addr
+module Memory_top(
+	input clk,
+	input vga_addr,
+	output vga_data
     );
 	
-	assign char_addr = {3'd0, line_counter[8:3], pixel_counter[9:3]} + 11'h480;
+	block_ram1 block_RAM_1(.clka(clk), .addra(vga_addr[15:0]), .douta(vga_data), .wea(1'b0),
+		  					  .dina(16'd0), .clkb(clk), .web(1'b0), .dinb(16'd0), .addrb(13'd0));
 
 endmodule
