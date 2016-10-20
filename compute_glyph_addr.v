@@ -21,9 +21,9 @@
 module compute_glyph_addr(
 	input [7:0] glyph,
 	input [9:0] line_counter,
-	output [9:0] glyph_addr
+	output [15:0] glyph_addr
     );
 	 
-	 assign glyph_addr = {glyph, line_counter[2:1]};
+	 assign glyph_addr = {6'd0, glyph, line_counter[2:1]} + 11'h400;
 
 endmodule

@@ -31,5 +31,7 @@ module ComputerV1(
 		wire [15:0] VGA_Data, VGA_Addr;
 
 		VGA_top VGA_module(clk, VGA_Data, Hsync, Vsync, colorOut, VGA_Addr);
-
+		
+		Memory_top Memory_module(clk, VGA_Addr, VGA_Data);
+		
 endmodule
