@@ -20,11 +20,11 @@
 //////////////////////////////////////////////////////////////////////////////////
 module Memory_top(
 	input clk,
-	input vga_addr,
-	output vga_data
+	input [15:0] vga_addr,
+	output [15:0] vga_data
     );
 	
-	block_ram1 block_RAM_1(.clka(clk), .addra(vga_addr[15:0]), .douta(vga_data), .wea(1'b0),
+	block_ram1 block_RAM_1(.clka(clk), .addra(vga_addr[15:0]), .douta(vga_data[15:0]), .wea(1'b0),
 		  					  .dina(16'd0), .clkb(clk), .web(1'b0), .dinb(16'd0), .addrb(13'd0));
 
 endmodule
