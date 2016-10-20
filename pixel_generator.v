@@ -23,7 +23,6 @@ module pixel_generator(
 	input [9:0] pixel_counter,
 	input [9:0] line_counter,
 	input active,
-	input [7:0] sw,
 	output reg [7:0] color
     );
 	 

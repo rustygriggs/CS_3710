@@ -20,7 +20,6 @@
 //////////////////////////////////////////////////////////////////////////////////
 module VGA_top(
 		input clk,
-		input [7:0] sw,
 		input [15:0] vgaData,
 		output Hsync,
 		output Vsync,
@@ -35,7 +34,7 @@ module VGA_top(
 		wire [7:0] colorIntermediate;		
 		
 		VGA_counters count(clk, pixel_counter, line_counter, pixel_state, active);
-		pixel_generator pixelGen(clk, pixel_counter, line_counter, active, sw, colorIntermediate);
+		pixel_generator pixelGen(clk, pixel_counter, line_counter, active, colorIntermediate);
 		VGA_output VGA_out(clk, pixel_counter, line_counter, pixel_state, active, colorIntermediate, Hsync, Vsync, colorOut);
 
 		
