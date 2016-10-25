@@ -84,7 +84,7 @@ module pixel_generator(
 			//end
 			//else
 			if (!pixel_en) begin
-				color = 8'b11111111;
+				color = creative;
 			end
 			else begin
 				color = 8'b00000000;
