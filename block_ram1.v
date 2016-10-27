@@ -36,8 +36,6 @@
 
 `timescale 1ns/1ps
 
-//synthesis attribute box_type <block_ram1> "black_box"
-
 module block_ram1(
   clka,
   wea,
