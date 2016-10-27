@@ -24,7 +24,7 @@ module compute_char_addr(
 	output [14:0] char_addr
     );
 	 
-	parameter CHAR_OFFSET = 11'h5FF;
+	parameter CHAR_OFFSET = 11'h600;
 	
 	assign char_addr = {2'd0, line_counter, pixel_counter} + CHAR_OFFSET;
 
