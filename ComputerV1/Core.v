@@ -32,6 +32,7 @@ module Core(
 	reg [14:0] MA = 15'd7;
 	reg [15:0] data = 15'd27;
 	reg [N-1:0] cycle;
+	reg opcode;
 	
 	always@(posedge clk)
 	begin
