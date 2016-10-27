@@ -22,7 +22,7 @@ module pixel_generator(
 	input clk,
 	input [1:0] pixel_state,
 	input [9:0] pixel_counter,
-	input [9:0] line_counter,
+	input [8:0] line_counter,
 	input active,
 	input [15:0] vga_data,
 	output reg [7:0] color,
@@ -40,15 +40,15 @@ module pixel_generator(
 	 wire pixel_en;
 	 wire [15:0] glyph_bits;
 	 
-	 compute_char_addr compute_char_add(pixel_counter, line_counter, char_addr);	 
+	 compute_char_addr compute_char_add(pixel_counter[9:3], line_counter[8:3], char_addr);	 
 	 
-	 compute_glyph_addr compute_glyph_add(glyph, line_counter, glyph_addr);
+	 compute_glyph_addr compute_glyph_add(glyph, line_counter[2:1], glyph_addr);
 	 
-	 extract_pixel extract_pix(glyph_bits, pixel_counter, line_counter, pixel_en);
+	 extract_pixel extract_pix(glyph_bits, pixel_counter[2:0], line_counter[0], pixel_en);
 
-	 assign vga_addr = (pixel_state == 0 ? char_addr : glyph_addr);
+	 assign vga_addr = (pixel_state == 2'b0 ? char_addr : glyph_addr);
 	 assign glyph = vga_data[7:0];
-	 assign creative = vga_data[15:8];
+	 //assign creative = vga_data[15:8];
 	 assign glyph_bits = vga_data;
 
 	 /*always@(posedge clk)
@@ -79,12 +79,9 @@ module pixel_generator(
 	 //light up the right pixel
 	 always @ (posedge clk) begin
 		 if (active) begin
-			//if (line_counter[7:0] == creative) begin
-			//	color = 8'd255;
-			//end
-			//else
 			if (!pixel_en) begin
-				color = creative;
+			//	color = creative;
+				color = 8'b11111111;
 			end
 			else begin
 				color = 8'b00000000;

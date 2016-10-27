@@ -33,6 +33,8 @@ module VGA_counters(
 	 parameter ACTIVE_START_LINES = 32;
 	 parameter ACTIVE_END_LINES = 512;
  	 parameter PIXEL_ST_MAX = 3;
+
+	 
 	 
 	 always @(posedge clk) begin 
 		//increment pixel state (for 25 MHz)

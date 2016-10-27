@@ -23,7 +23,6 @@ module VGA_output(
 	input [9:0] pixel_counter,
 	input [9:0] line_counter,
 	input [1:0] pixel_state,
-	input active,
 	input [7:0] colorIn,
 	output reg Hsync,
 	output reg Vsync,

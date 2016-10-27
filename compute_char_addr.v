@@ -19,11 +19,13 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module compute_char_addr(
-	input [9:0] pixel_counter,
-	input [9:0] line_counter,
+	input [6:0] pixel_counter,
+	input [5:0] line_counter,
 	output [14:0] char_addr
     );
+	 
+	parameter CHAR_OFFSET = 11'h5FF;
 	
-	assign char_addr = {2'd0, line_counter[8:3], pixel_counter[9:3]} + 15'h5FF;
+	assign char_addr = {2'd0, line_counter, pixel_counter} + CHAR_OFFSET;
 
 endmodule

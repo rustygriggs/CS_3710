@@ -20,10 +20,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 module compute_glyph_addr(
 	input [7:0] glyph,
-	input [9:0] line_counter,
+	input [1:0] line_counter,
 	output [14:0] glyph_addr
     );
 	 
-	 assign glyph_addr = {5'd0, glyph, line_counter[2:1]} + 15'h400;
+	 parameter GLYPH_OFFSET = 11'h400;
+	 
+	 assign glyph_addr = {5'd0, glyph, line_counter} + GLYPH_OFFSET;
 
 endmodule

@@ -20,8 +20,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 module extract_pixel(
 	input [15:0] glyph_bits,
-	input [9:0] pixel_counter,
-	input [9:0] line_counter,
+	input [2:0] pixel_counter,
+	input line_counter,
 	output reg pixel_enable
     );
 
@@ -31,7 +31,7 @@ module extract_pixel(
 	
 	initial result_bits = 0;
 	
-	assign line_odd = line_counter[0] & 1'b1;
+	assign line_odd = line_counter & 1'b1;
 	
 	always @ (*) begin
 		if (line_odd) begin
@@ -42,7 +42,7 @@ module extract_pixel(
 		end
 		
 		//map the pixel_counter 3 least sig bits to result
-		case (pixel_counter[2:0]) 
+		case (pixel_counter) 
 			0: pixel_enable = result_bits[7];
 			1: pixel_enable = result_bits[6];
 			2: pixel_enable = result_bits[5];
