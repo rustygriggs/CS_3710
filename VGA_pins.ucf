@@ -4,8 +4,8 @@
 ## - rename the used signals according to the project
 
 ##Clock signal
-Net "externalClk" LOC=V10 | IOSTANDARD=LVCMOS33;
-Net "externalClk" TNM_NET = sys_clk_pin;
+Net "external_clk" LOC=V10 | IOSTANDARD=LVCMOS33;
+Net "external_clk" TNM_NET = sys_clk_pin;
 TIMESPEC TS_sys_clk_pin = PERIOD sys_clk_pin 100000 kHz;
 
 ## onBoard USB controller
@@ -180,17 +180,17 @@ TIMESPEC TS_sys_clk_pin = PERIOD sys_clk_pin 100000 kHz;
 #Net "btnr" LOC = D9 | IOSTANDARD = LVCMOS33; # Bank = 0, pin name = IO_L34P_GCLK19, Sch name = BTNR
 
 ## VGA Connector
-NET "colorOut[7]" LOC = U7 | IOSTANDARD = LVCMOS33; # Bank = 2, pin name = IO_L43P, Sch name = RED0
-NET "colorOut[6]" LOC = V7 | IOSTANDARD = LVCMOS33; # Bank = 2, pin name = IO_L43N, Sch name = RED1
-NET "colorOut[5]" LOC = N7 | IOSTANDARD = LVCMOS33; # Bank = 2, pin name = IO_L44P, Sch name = RED2
-NET "colorOut[4]" LOC = P8 | IOSTANDARD = LVCMOS33; # Bank = 2, pin name = IO_L44N, Sch name = GRN0
-NET "colorOut[3]" LOC = T6 | IOSTANDARD = LVCMOS33; # Bank = 2, pin name = IO_L45P, Sch name = GRN1
-NET "colorOut[2]" LOC = V6 | IOSTANDARD = LVCMOS33; # Bank = 2, pin name = IO_L45N, Sch name = GRN2
-NET "colorOut[1]" LOC = R7 | IOSTANDARD = LVCMOS33; # Bank = 2, pin name = IO_L46P, Sch name = BLU1
-NET "colorOut[0]" LOC = T7 | IOSTANDARD = LVCMOS33; # Bank = 2, pin name = IO_L46N, Sch name = BLU2
+NET "color_out[7]" LOC = U7 | IOSTANDARD = LVCMOS33; # Bank = 2, pin name = IO_L43P, Sch name = RED0
+NET "color_out[6]" LOC = V7 | IOSTANDARD = LVCMOS33; # Bank = 2, pin name = IO_L43N, Sch name = RED1
+NET "color_out[5]" LOC = N7 | IOSTANDARD = LVCMOS33; # Bank = 2, pin name = IO_L44P, Sch name = RED2
+NET "color_out[4]" LOC = P8 | IOSTANDARD = LVCMOS33; # Bank = 2, pin name = IO_L44N, Sch name = GRN0
+NET "color_out[3]" LOC = T6 | IOSTANDARD = LVCMOS33; # Bank = 2, pin name = IO_L45P, Sch name = GRN1
+NET "color_out[2]" LOC = V6 | IOSTANDARD = LVCMOS33; # Bank = 2, pin name = IO_L45N, Sch name = GRN2
+NET "color_out[1]" LOC = R7 | IOSTANDARD = LVCMOS33; # Bank = 2, pin name = IO_L46P, Sch name = BLU1
+NET "color_out[0]" LOC = T7 | IOSTANDARD = LVCMOS33; # Bank = 2, pin name = IO_L46N, Sch name = BLU2
 
-NET "Hsync" LOC = N6 | IOSTANDARD = LVCMOS33; # Bank = 2, pin name = IO_L47P, Sch name = HSYNC
-NET "Vsync" LOC = P7 | IOSTANDARD = LVCMOS33; # Bank = 2, pin name = IO_L47N, Sch name = VSYNC
+NET "h_sync" LOC = N6 | IOSTANDARD = LVCMOS33; # Bank = 2, pin name = IO_L47P, Sch name = HSYNC
+NET "v_sync" LOC = P7 | IOSTANDARD = LVCMOS33; # Bank = 2, pin name = IO_L47N, Sch name = VSYNC
 
 ## 12 pin connectors
 

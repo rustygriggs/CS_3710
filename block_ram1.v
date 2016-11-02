@@ -25,8 +25,8 @@
 *     (c) Copyright 1995-2016 Xilinx, Inc.                                     *
 *     All rights reserved.                                                     *
 *******************************************************************************/
-// You must compile the wrapper file block_ram1.v when simulating
-// the core, block_ram1. When compiling the wrapper file, be sure to
+// You must compile the wrapper file Block_Ram1.v when simulating
+// the core, Block_Ram1. When compiling the wrapper file, be sure to
 // reference the XilinxCoreLib Verilog simulation library. For detailed
 // instructions, please refer to the "CORE Generator Help".
 
@@ -36,9 +36,7 @@
 
 `timescale 1ns/1ps
 
-//synthesis attribute box_type <block_ram1> "black_box"
-
-module block_ram1(
+module Block_Ram1(
   clka,
   wea,
   addra,
@@ -93,7 +91,7 @@ output [15 : 0] doutb;
     .C_HAS_SOFTECC_INPUT_REGS_A(0),
     .C_HAS_SOFTECC_OUTPUT_REGS_B(0),
     .C_INIT_FILE("BlankString"),
-    .C_INIT_FILE_NAME("block_ram1.mif"),
+    .C_INIT_FILE_NAME("Block_Ram1.mif"),
     .C_INITA_VAL("0"),
     .C_INITB_VAL("0"),
     .C_INTERFACE_TYPE(0),

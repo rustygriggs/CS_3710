@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module compute_glyph_addr(
+module Compute_Glyph_Addr(
 	input [7:0] glyph,
 	input [1:0] line_counter,
 	output [14:0] glyph_addr

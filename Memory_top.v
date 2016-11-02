@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Memory_top(
+module Memory_Top(
 	input clk,
 	input [14:0] vga_addr,
 	input [15:0] proc_data_in,
@@ -30,7 +30,7 @@ module Memory_top(
 	
 	//Add this to block_ram1 module when generating it again: //synthesis attribute box_type <block_ram1> "black_box"
 	
-	block_ram1 block_RAM_1(.clka(clk), .addra(vga_addr[14:0]), .douta(vga_data[15:0]), .wea(1'b0),
+	Block_Ram1 Block_Ram(.clka(clk), .addra(vga_addr[14:0]), .douta(vga_data[15:0]), .wea(1'b0),
 		  					  .dina(16'd0), .clkb(clk), .web(w), .dinb(proc_data_in), .addrb(addr), .doutb(proc_data_out));
 
 endmodule

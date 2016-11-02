@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module VGA_counters(
+module VGA_Counters(
 	input clk,
 	output reg [9:0] pixel_counter,
 	output reg [9:0] line_counter,

@@ -19,21 +19,21 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module ComputerV1(
-		input externalClk,
-		output Hsync,
-		output Vsync,
-		output [7:0] colorOut
+		input external_clk,
+		output h_sync,
+		output v_sync,
+		output [7:0] color_out
     );
-		// Cloock Stuff
-		IBUFG pad_to_clock_logic(.I(externalClk), .O(internalClk));
-		BUFG clock_logic_to_clk(.I(internalClk), .O(clk));
+		// Clock Stuff
+		IBUFG pad_to_clock_logic(.I(external_clk), .O(internal_clk));
+		BUFG clock_logic_to_clk(.I(internal_clk), .O(clk));
 
-		wire [15:0] VGA_Data, proc_data_in, proc_data_out;
-		wire [14:0] VGA_Addr, addr;
+		wire [15:0] vga_data, proc_data_in, proc_data_out;
+		wire [14:0] vga_addr, memory_addr;
 
-		VGA_top VGA_module(clk, VGA_Data, Hsync, Vsync, colorOut, VGA_Addr);
+		VGA_Top VGA_Module(clk, vga_data, h_sync, v_sync, color_out, vga_addr);
 		
-		Memory_top Memory_module(clk, VGA_Addr, proc_data_in, w, addr, VGA_Data, proc_data_out);
+		Memory_Top Memory_Module(clk, vga_addr, proc_data_in, w, memory_addr, vga_data, proc_data_out);
 		
-		Core Core_module(clk, proc_data_out, proc_data_in, addr, w);
+		Core Core_Module(clk, proc_data_out, proc_data_in, memory_addr, w);
 endmodule

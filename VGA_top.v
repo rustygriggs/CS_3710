@@ -18,26 +18,26 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module VGA_top(
+module VGA_Top(
 		input clk,
-		input [15:0] vgaData,
-		output Hsync,
-		output Vsync,
-		output [7:0] colorOut,
-		output [14:0] vgaAddress
+		input [15:0] vga_data,
+		output h_sync,
+		output v_sync,
+		output [7:0] color_out,
+		output [14:0] vga_address
 		);
 		
 		wire [9:0] line_counter;
 		wire [1:0] pixel_state;
 		wire [9:0] pixel_counter;
 		wire active;
-		wire [7:0] colorIntermediate;		
+		wire [7:0] color_intermediate;		
 		
-		VGA_counters count(clk, pixel_counter, line_counter, pixel_state, active);
+		VGA_Counters Count(clk, pixel_counter, line_counter, pixel_state, active);
 		
-		pixel_generator pixelGen(clk, pixel_state, pixel_counter, line_counter[8:0], active, vgaData, colorIntermediate, vgaAddress);
+		Pixel_Generator PixelGen(clk, pixel_state, pixel_counter, line_counter[8:0], active, vga_data, color_intermediate, vga_address);
 		
-		VGA_output VGA_out(clk, pixel_counter, line_counter, pixel_state, colorIntermediate, Hsync, Vsync, colorOut);
+		VGA_Output VGA_Out(clk, pixel_counter, line_counter, pixel_state, color_intermediate, h_sync, v_sync, color_out);
 
 		
 endmodule

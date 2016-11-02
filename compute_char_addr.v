@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module compute_char_addr(
+module Compute_Char_Addr(
 	input [6:0] pixel_counter,
 	input [5:0] line_counter,
 	output [14:0] char_addr

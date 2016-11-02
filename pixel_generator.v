@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module pixel_generator(
+module Pixel_Generator(
 	input clk,
 	input [1:0] pixel_state,
 	input [9:0] pixel_counter,
@@ -40,11 +40,11 @@ module pixel_generator(
 	 wire pixel_en;
 	 wire [15:0] glyph_bits;
 	 
-	 compute_char_addr compute_char_add(pixel_counter[9:3], line_counter[8:3], char_addr);	 
+	 Compute_Char_Addr Compute_Char_Add(pixel_counter[9:3], line_counter[8:3], char_addr);	 
 	 
-	 compute_glyph_addr compute_glyph_add(glyph, line_counter[2:1], glyph_addr);
+	 Compute_Glyph_Addr Compute_Glyph_Add(glyph, line_counter[2:1], glyph_addr);
 	 
-	 extract_pixel extract_pix(glyph_bits, pixel_counter[2:0], line_counter[0], pixel_en);
+	 Extract_Pixel Extract_Pix(glyph_bits, pixel_counter[2:0], line_counter[0], pixel_en);
 
 	 assign vga_addr = (pixel_state == 2'b0 ? char_addr : glyph_addr);
 	 assign glyph = vga_data[7:0];
@@ -66,16 +66,7 @@ module pixel_generator(
 		end
 		
 	 end*/
-	 
-	 
-	//this is just for filler until we have the real thing
-    //text_buffer text_buf(.clka(clk), .addra(char_addr[12:0]), .douta({glyph, creative}), .wea(1'b0),
-		//						  .dina(16'd0), .clkb(clk), .web(1'b0), .dinb(16'd0), .addrb(13'd0));
-	 
-	 //again, just for filler
-	 //glyph_buffer glyph_buf(.clka(clk), .addra(glyph_address), .douta(glyph_bits), .wea(1'b0),
-	//								.dina(16'd0), .clkb(clk), .web(1'b0), .dinb(16'd0), .addrb(10'd0));
-	 
+	 	 
 	 //light up the right pixel
 	 always @ (posedge clk) begin
 		 if (active) begin

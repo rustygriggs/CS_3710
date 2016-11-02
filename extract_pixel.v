@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module extract_pixel(
+module Extract_Pixel(
 	input [15:0] glyph_bits,
 	input [2:0] pixel_counter,
 	input line_counter,
