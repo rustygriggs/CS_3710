@@ -50,7 +50,7 @@ module Core(
 	initial write = 1'b0;
 	
 	parameter reset = 6'd0, load = 6'd1, store = 6'd2, incr = 6'd3, pause = 6'd4;
-	parameter cycle0 = 3'd0, cycle1 = 3'd1, cycle2 = 3'd2, cycle3 = 3'd3, cycle4 = 3'd4, cycle5 = 3'd5, cycle6 = 3'd6; 
+	parameter cycle0 = 3'd0, cycle1 = 3'd1, cycle2 = 3'd2, cycle3 = 3'd3, cycle4 = 3'd4, cycle5 = 3'd5, cycle6 = 3'd6, cycle7 = 3'd7; 
 	
 	//assign memory_addr = (cycle == 0 ? PC : (opcode == 1 ? MA1 : MA2));
 	
@@ -85,16 +85,17 @@ module Core(
 					end
 					store:
 					begin
-						memory_addr = MA2;
-						data_in = reg1;
-						write = 1;
+						PC = PC + 15'd1;				
+						memory_addr = PC;
+						//memory_addr = MA1;
+						write = 0;
 					end
 					incr:
 					begin
-						memory_addr = MA2;
-						//data_in = reg1;
+						PC = PC + 15'd1;				
+						memory_addr = PC;
 						//data_in = data;
-						write = 1;
+						write = 0;
 					end
 				endcase
 			end
@@ -111,7 +112,9 @@ module Core(
 					end
 					store:
 					begin
-						write = 0;
+						memory_addr = data_out[14:0];
+						data_in = reg1;
+						write = 1;
 					end
 					incr:
 					begin
@@ -130,20 +133,23 @@ module Core(
 						//begin
 						reg1 = data_out;
 						//end
+						write = 0;
 					end
 					store:
 					begin
-						//write = 0;
+						write = 0;
 					end
 					incr:
 					begin
-						//write = 0;
+						write = 0;
 					end
 				endcase
+			end
+			cycle7:
+			begin 
 				PC = PC + 15'd1;
 			end
 		endcase
-
 		cycle = cycle + 2'd1;
 	
 	end
