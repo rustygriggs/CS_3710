@@ -86,14 +86,14 @@ module Core(
 					store:
 					begin
 						memory_addr = MA2;
-						//data_in = reg1;
+						data_in = reg1;
 						write = 1;
 					end
 					incr:
 					begin
 						memory_addr = MA2;
 						//data_in = reg1;
-						data_in = data;
+						//data_in = data;
 						write = 1;
 					end
 				endcase
@@ -104,7 +104,8 @@ module Core(
 				case(opcode)
 					load:
 					begin
-						reg1 = data_out;
+						memory_addr = data_out[14:0];
+						//reg1 = data_out;
 						//data = data_out;
 						write = 0;
 					end
@@ -127,7 +128,7 @@ module Core(
 						//data_in = data_out;
 						//if(first_reg == 5'd0)
 						//begin
-						//reg1 = data_out;
+						reg1 = data_out;
 						//end
 					end
 					store:
