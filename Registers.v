@@ -19,10 +19,13 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module Registers(
-	input [3:0] register,
+	input clk,
+	input [4:0] register1,
+	input [4:0] register2,
 	input [15:0] data_in,
 	input write,
-	output reg [15:0] data_out
+	output [15:0] r1_data_out,
+	output [15:0] r2_data_out
     );
 
 	reg [15:0]pc;
@@ -44,70 +47,68 @@ module Registers(
 	parameter R6 = 4'd6, R7 = 4'd7, R8 = 4'd8, PCP = 4'd9, CMP = 4'd10, INST = 4'd11;
 	parameter SP = 4'd12, ADDR = 4'd13;
 
-	always@(*) begin
-		case(write)
-			1'b0:
-				case(register)
-					PC:
-						data_out = pc;
-					R1:
-						data_out = reg1;
-					R2:
-						data_out = reg2;
-					R3:
-						data_out = reg3;
-					R4:
-						data_out = reg4;
-					R5:
-						data_out = reg5;
-					R6:
-						data_out = reg6;
-					R7:
-						data_out = reg7;
-					R8:
-						data_out = reg8;
-					PCP:
-						data_out = pcp;
-					CMP:
-						data_out = cmp;
-					INST:
-						data_out = inst;
-					SP:
-						data_out = sp;
-					ADDR:
-						data_out = addr;
-				endcase
-			1'b1:
-				case(register)
-					PC:
-						pc = data_in;
-					R1:
-						reg1 = data_in;
-					R2:
-						reg2 = data_in;
-					R3:
-						reg3 = data_in;
-					R4:
-						reg4 = data_in;
-					R5:
-						reg5 = data_in;
-					R6:
-						reg6 = data_in;
-					R7:
-						reg7 = data_in;
-					R8:
-						reg8 = data_in;
-					PCP:
-						pcp = data_in;
-					CMP:
-						cmp = data_in;
-					INST:
-						inst = data_in;
-					SP:
-						sp = data_in;
-					ADDR:
-						addr = data_in;
-				endcase
-		endcase
+	assign r1_data_out = register1 == PC ? pc:
+							register1 == R1 ? reg1:
+							register1 == R2 ? reg2:
+							register1 == R3 ? reg3:
+							register1 == R4 ? reg4:
+							register1 == R5 ? reg5:
+							register1 == R6 ? reg6:
+							register1 == R7 ? reg7:
+							register1 == R8 ? reg8:
+							register1 == PCP ? pcp:
+							register1 == CMP ? cmp:
+							register1 == INST ? inst:
+							register1 == SP ? sp: addr;
+	
+	assign r2_data_out = register2 == PC ? pc:
+							register2 == R1 ? reg1:
+							register2 == R2 ? reg2:
+							register2 == R3 ? reg3:
+							register2 == R4 ? reg4:
+							register2 == R5 ? reg5:
+							register2 == R6 ? reg6:
+							register2 == R7 ? reg7:
+							register2 == R8 ? reg8:
+							register2 == PCP ? pcp:
+							register2 == CMP ? cmp:
+							register2 == INST ? inst:
+							register2 == SP ? sp: addr;
+	
+	always@(posedge clk)
+	begin
+		if(write == 1'b1)
+		begin
+			case(register1)
+				PC:
+					pc <= data_in;
+				R1:
+					reg1 <= data_in;
+				R2:
+					reg2 <= data_in;
+				R3:
+					reg3 <= data_in;
+				R4:
+					reg4 <= data_in;
+				R5:
+					reg5 <= data_in;
+				R6:
+					reg6 <= data_in;
+				R7:
+					reg7 <= data_in;
+				R8:
+					reg8 <= data_in;
+				PCP:
+					pcp <= data_in;
+				CMP:
+					cmp <= data_in;
+				INST:
+					inst <= data_in;
+				SP:
+					sp <= data_in;
+				ADDR:
+					addr <= data_in;
+			endcase
+		end
 	end
 endmodule
