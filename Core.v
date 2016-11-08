@@ -30,10 +30,10 @@ module Core(
 	reg [N-1:0] ps = fetch;
 	reg [N-1:0] ns = fetch; 
 	reg [14:0] PC = 15'h2400;
-	//reg [N-1:0] cycle = 2'b0;
 	reg [5:0]opcode;
 	reg [4:0] register1;
 	reg [4:0] register2;
+	//reg [14:0] addr;
 	
 	wire [4:0]r1;
 	wire [4:0]r2;
@@ -54,18 +54,21 @@ module Core(
 	assign write = ns == store2 ? 1'd1 : 1'd0;
 	assign data_in = r1_out;
 
-	assign r_in = (ns == add2 || ns == sub2) ? ALU_out : data_out;
-	assign r_w = (ns == load3 || ns == add2 || ns == sub2) ?  1'd1 : 1'd0; 
-	assign r1 = register1;
+	assign r_in = (ns == ALU2) ? ALU_out : data_out;
+	assign r_w = (ns == load3 || ns == ALU2) ?  1'd1 : 1'd0; 
+	assign r1 = ns == jmp2 ? cmp : ns == ALU2 ? (opcode == test) ? cmp : register1 : register1;
 	assign r2 = register2;
 	
 	assign ALU_inst = opcode;
 	assign ALU_A = r1_out;
 	assign ALU_B =	r2_out;	
 	
-	parameter reset = 6'd0, load = 6'd1, store = 6'd2, add = 6'd5, sub = 6'd6;
-	parameter fetch = 6'd0, inst = 6'd1, load2 = 6'd2, store2 = 6'd3, load3 = 6'd4, add2 = 6'd5, sub2 = 6'd6;
-		
+	parameter reset = 6'd0, load = 6'd1, store = 6'd2, move = 6'd3, _not = 6'd4, _and = 6'd5, _or = 6'd6;
+	parameter shiftr = 6'd7, shiftl = 6'd8, add = 6'd9, sub = 6'd10, test = 6'd11, jmpEq = 6'd12, jmpLE = 6'd13;
+	parameter jmpGE = 6'd14, jmpL = 6'd15, jmpG = 6'd16, jmp = 6'd17;
+	
+	parameter fetch = 6'd0, inst = 6'd1, load2 = 6'd2, store2 = 6'd3, load3 = 6'd4, ALU2 = 6'd5, jmp2 = 6'd6;
+	parameter cmp = 5'd10;
 	
 	always@(posedge clk)
 	begin
@@ -93,24 +96,48 @@ module Core(
 					end
 					store:
 						ns <= store2;
-					add:
-					begin
-						ns <= add2;
-					end
-					sub:
-					begin
-						ns <= sub2;
-					end
+					move, _not, _and, _or, shiftr, shiftl, add, sub, test:
+						ns <= ALU2;
+					jmpEq, jmpLE, jmpGE, jmpL, jmpG, jmp:
+						ns <= jmp2;
 					default:
 						ns <= fetch;
 				endcase
 			end
-			add2:
+			jmp2:
 			begin
-				PC <= PC + 15'd1;
-				ns <= inst;
+				case(opcode)
+					jmpEq:
+					begin
+						if(r1_out == 0)
+							PC <= data_out[14:0];
+					end
+					jmpGE:
+					begin
+						if(r1_out >= 0)
+							PC <= data_out[14:0];
+					end
+					jmpLE:
+					begin
+						if(r1_out <= 0)
+							PC <= data_out[14:0];
+					end
+					jmpL:
+					begin
+						if(r1_out < 0)
+							PC <= data_out[14:0];
+					end
+					jmpG:
+					begin
+						if(r1_out > 0)
+							PC <= data_out[14:0];
+					end
+					default:
+						PC <= data_out[14:0];
+				endcase
+				ns	<= fetch;
 			end
-			sub2:
+			ALU2:
 			begin
 				PC <= PC + 15'd1;
 				ns <= inst;

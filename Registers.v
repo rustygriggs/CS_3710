@@ -43,12 +43,11 @@ module Registers(
 	reg [15:0]sp;
 	reg [15:0]addr;	
 
-	parameter PC = 4'd0, R1 = 4'd1, R2 = 4'd2, R3 = 4'd3, R4 = 4'd4, R5 = 4'd5;
+	parameter R1 = 4'd1, R2 = 4'd2, R3 = 4'd3, R4 = 4'd4, R5 = 4'd5;
 	parameter R6 = 4'd6, R7 = 4'd7, R8 = 4'd8, PCP = 4'd9, CMP = 4'd10, INST = 4'd11;
-	parameter SP = 4'd12, ADDR = 4'd13;
+	parameter SP = 4'd12;
 
-	assign r1_data_out = register1 == PC ? pc:
-							register1 == R1 ? reg1:
+	assign r1_data_out = register1 == R1 ? reg1:
 							register1 == R2 ? reg2:
 							register1 == R3 ? reg3:
 							register1 == R4 ? reg4:
@@ -58,11 +57,9 @@ module Registers(
 							register1 == R8 ? reg8:
 							register1 == PCP ? pcp:
 							register1 == CMP ? cmp:
-							register1 == INST ? inst:
-							register1 == SP ? sp: addr;
+							register1 == INST ? inst: sp;
 	
-	assign r2_data_out = register2 == PC ? pc:
-							register2 == R1 ? reg1:
+	assign r2_data_out = register2 == R1 ? reg1:
 							register2 == R2 ? reg2:
 							register2 == R3 ? reg3:
 							register2 == R4 ? reg4:
@@ -72,16 +69,13 @@ module Registers(
 							register2 == R8 ? reg8:
 							register2 == PCP ? pcp:
 							register2 == CMP ? cmp:
-							register2 == INST ? inst:
-							register2 == SP ? sp: addr;
+							register2 == INST ? inst: sp;
 	
 	always@(posedge clk)
 	begin
 		if(write == 1'd1)
 		begin
 			case(register1)
-				PC:
-					pc <= data_in;
 				R1:
 					reg1 <= data_in;
 				R2:
@@ -106,8 +100,6 @@ module Registers(
 					inst <= data_in;
 				SP:
 					sp <= data_in;
-				ADDR:
-					addr <= data_in;
 			endcase
 		end
 	end
