@@ -77,7 +77,7 @@ module Registers(
 	
 	always@(posedge clk)
 	begin
-		if(write == 1'b1)
+		if(write == 1'd1)
 		begin
 			case(register1)
 				PC:
