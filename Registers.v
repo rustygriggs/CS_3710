@@ -28,20 +28,20 @@ module Registers(
 	output [15:0] r2_data_out
     );
 
-	reg [15:0]pc;
-	reg [15:0]reg1;
-	reg [15:0]reg2;
-	reg [15:0]reg3;
-	reg [15:0]reg4;
-	reg [15:0]reg5;
-	reg [15:0]reg6;
-	reg [15:0]reg7;
-	reg [15:0]reg8;
-	reg [15:0]pcp;
-	reg [15:0]cmp;
-	reg [15:0]inst;
-	reg [15:0]sp;
-	reg [15:0]addr;	
+	reg [15:0]pc = 0;
+	reg [15:0]reg1 = 0;
+	reg [15:0]reg2 = 0;
+	reg [15:0]reg3 = 0;
+	reg [15:0]reg4 = 0;
+	reg [15:0]reg5 = 0;
+	reg [15:0]reg6 = 0;
+	reg [15:0]reg7 = 0;
+	reg [15:0]reg8 = 0;
+	reg [15:0]pcp = 0;
+	reg [15:0]cmp = 0;
+	reg [15:0]inst = 0;
+	reg [15:0]sp = 0;
+	reg [15:0]addr = 0;	
 
 	parameter R1 = 5'd1, R2 = 5'd2, R3 = 5'd3, R4 = 5'd4, R5 = 5'd5;
 	parameter R6 = 5'd6, R7 = 5'd7, R8 = 5'd8, PCP = 5'd9, CMP = 5'd10, INST = 5'd11;
