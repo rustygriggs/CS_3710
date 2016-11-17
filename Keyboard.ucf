@@ -1,0 +1,53 @@
+NET "extclk" IOSTANDARD = LVCMOS33;
+NET "reset" IOSTANDARD = LVCMOS33;
+NET "key_clk" IOSTANDARD = LVCMOS33;
+NET "key_data" IOSTANDARD = LVCMOS33;
+
+NET "extclk" LOC = V10;
+NET "reset" LOC = D9;
+NET "key_clk" LOC = L12;
+NET "key_data" LOC = J13;
+
+NET "a" IOSTANDARD = LVCMOS33;
+NET "b" IOSTANDARD = LVCMOS33;
+NET "c" IOSTANDARD = LVCMOS33;
+NET "d" IOSTANDARD = LVCMOS33;
+NET "e" IOSTANDARD = LVCMOS33;
+NET "f" IOSTANDARD = LVCMOS33;
+NET "g" IOSTANDARD = LVCMOS33;
+NET "dp" IOSTANDARD = LVCMOS33;
+NET "en[3]" IOSTANDARD = LVCMOS33;
+NET "en[2]" IOSTANDARD = LVCMOS33;
+NET "en[1]" IOSTANDARD = LVCMOS33;
+NET "en[0]" IOSTANDARD = LVCMOS33;
+
+NET "a" LOC = T17;
+NET "b" LOC = T18;
+NET "c" LOC = U17;
+NET "d" LOC = U18;
+NET "e" LOC = M14;
+NET "f" LOC = N14;
+NET "g" LOC = L14;
+NET "dp" LOC = M13;
+NET "en[0]" LOC = N16;
+NET "en[1]" LOC = N15;
+NET "en[2]" LOC = P18;
+NET "en[3]" LOC = P17;
+
+NET "data_reg[7]" IOSTANDARD = LVCMOS33;
+NET "data_reg[6]" IOSTANDARD = LVCMOS33;
+NET "data_reg[5]" IOSTANDARD = LVCMOS33;
+NET "data_reg[4]" IOSTANDARD = LVCMOS33;
+NET "data_reg[3]" IOSTANDARD = LVCMOS33;
+NET "data_reg[2]" IOSTANDARD = LVCMOS33;
+NET "data_reg[1]" IOSTANDARD = LVCMOS33;
+NET "data_reg[0]" IOSTANDARD = LVCMOS33;
+
+NET "data_reg[0]" LOC = T11;
+NET "data_reg[1]" LOC = R11;
+NET "data_reg[2]" LOC = N11;
+NET "data_reg[3]" LOC = M11;
+NET "data_reg[4]" LOC = V15;
+NET "data_reg[5]" LOC = U15;
+NET "data_reg[6]" LOC = V16;
+NET "data_reg[7]" LOC = U16;
