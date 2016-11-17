@@ -24,6 +24,9 @@ module ComputerV1(
 		output v_sync,
 		output [7:0] color_out
     );
+		wire internal_clk;
+		wire clk;
+		
 		// Clock Stuff
 		IBUFG pad_to_clock_logic(.I(external_clk), .O(internal_clk));
 		BUFG clock_logic_to_clk(.I(internal_clk), .O(clk));

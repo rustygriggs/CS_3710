@@ -43,9 +43,9 @@ module Registers(
 	reg [15:0]sp;
 	reg [15:0]addr;	
 
-	parameter R1 = 4'd1, R2 = 4'd2, R3 = 4'd3, R4 = 4'd4, R5 = 4'd5;
-	parameter R6 = 4'd6, R7 = 4'd7, R8 = 4'd8, PCP = 4'd9, CMP = 4'd10, INST = 4'd11;
-	parameter SP = 4'd12;
+	parameter R1 = 5'd1, R2 = 5'd2, R3 = 5'd3, R4 = 5'd4, R5 = 5'd5;
+	parameter R6 = 5'd6, R7 = 5'd7, R8 = 5'd8, PCP = 5'd9, CMP = 5'd10, INST = 5'd11;
+	parameter SP = 5'd12;
 
 	assign r1_data_out = register1 == R1 ? reg1:
 							register1 == R2 ? reg2:
