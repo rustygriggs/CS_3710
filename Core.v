@@ -58,7 +58,7 @@ module Core(
 	
 	assign memory_addr = (ns == load3 || ns == store3) ? data_out[14:0] : ns == storeR2 ? r2_out[14:0] : (ns == fetch || ns == load2 || ns == store2) ? PC : 15'd0; // (ns == push2 || ns == pop2) ? SP
 	assign write = ns == store3 || ns == storeR2 ? 1'd1 : 1'd0; //|| ns == push2)
-	assign data_in = r1_out;
+	assign data_in = ns == store3 || ns == storeR2 ? r1_out : 15'd0;
 
 	assign r_in = /*(ns == ALU2) ? ALU_out :*/ data_out;
 	assign r_w = (ns == load3 || ns == ALU2) ?  1'd1 : 1'd0; //ns == pop3 || 
