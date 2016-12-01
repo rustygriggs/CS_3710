@@ -38,9 +38,11 @@ module Registers(
 	reg [15:0]reg8 = 0;
 	reg [15:0]cmp = 0;
 	reg [15:0]sp = 0;	
+	reg [15:0]rst = 0;
+	reg [15:0]rsc = 0;
 
 	parameter R1 = 5'd1, R2 = 5'd2, R3 = 5'd3, R4 = 5'd4, R5 = 5'd5;
-	parameter R6 = 5'd6, R7 = 5'd7, R8 = 5'd8, CMP = 5'd9, SP = 5'd10;
+	parameter R6 = 5'd6, R7 = 5'd7, R8 = 5'd8, CMP = 5'd9, SP = 5'd10, R_Str = 5'd20, R_Scr = 5'd21;
 
 	assign r1_data_out = register1 == R1 ? reg1:
 							register1 == R2 ? reg2:
@@ -50,7 +52,9 @@ module Registers(
 							register1 == R6 ? reg6:
 							register1 == R7 ? reg7:
 							register1 == R8 ? reg8:
-							register1 == CMP ? cmp: sp;
+							register1 == CMP ? cmp: 
+							register1 == R_Str ? rst: 
+							register1 == R_Scr ? rsc: sp;
 	
 	assign r2_data_out = register2 == R1 ? reg1:
 							register2 == R2 ? reg2:
@@ -60,7 +64,9 @@ module Registers(
 							register2 == R6 ? reg6:
 							register2 == R7 ? reg7:
 							register2 == R8 ? reg8:
-							register2 == CMP ? cmp: sp;
+							register2 == CMP ? cmp: 
+							register1 == R_Str ? rst: 
+							register1 == R_Scr ? rsc: sp;
 	
 	always@(posedge clk)
 	begin
@@ -87,6 +93,10 @@ module Registers(
 					cmp <= data_in;
 				SP:
 					sp <= data_in;
+				R_Str:
+					rst <= data_in;
+				R_Scr:
+					rsc <= data_in;
 			endcase
 		end
 	end
