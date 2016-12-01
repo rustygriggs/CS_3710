@@ -70,12 +70,12 @@ module Core(
 	//assign ALU_A = r1_out;
 	//assign ALU_B =	r2_out;
 	
-	parameter /*nop = 6'd0,*/ load = 6'd1, store = 6'd2, storeR = 6'd21;//, move = 6'd3, _not = 6'd4, _and = 6'd5, _or = 6'd6;
+	parameter /*nop = 6'd0,*/ load = 6'd1, store = 6'd2, loadi = 6'd3, storeR = 6'd4; ;//, move = 6'd3, _not = 6'd4, _and = 6'd5, _or = 6'd6;
 	//parameter shiftr = 6'd7, shiftl = 6'd8, add = 6'd9, sub = 6'd10, test = 6'd11, jmpEq = 6'd12, jmpLE = 6'd13;
 	//parameter jmpGE = 6'd14, jmpL = 6'd15, jmpG = 6'd16, jmp = 6'd17, call = 6'd18, storeR = 6'd21, jmpF = 6'd22, reset = 6'd20, jmpNE = 6'd19; //push = 6'd19, pop = 6'd20,  jmpNE = 6'd22;
 	
-	parameter fetch = 6'd0, inst = 6'd14, load2 = 6'd15, store2 = 6'd3, load3 = 6'd4, ALU2 = 6'd5, jmp2 = 6'd6;//, pop2 = 6'd7, pop3 = 6'd8, push2 = 6'd9;
-	parameter load4 = 6'd10, store3 = 6'd11, storeR2 = 6'd12, storeR3 = 6'd13;
+	parameter fetch = 6'd0, inst = 6'd1, load2 = 6'd2, store2 = 6'd3, load3 = 6'd4, ALU2 = 6'd5, jmp2 = 6'd6;//, pop2 = 6'd7, pop3 = 6'd8, push2 = 6'd9;
+	parameter load4 = 6'd10, store3 = 6'd11, storeR2 = 6'd12, storeR3 = 6'd13, loadi2 = 6'd14;
 	//parameter cmp = 5'd10;
 	
 	always@(*)
@@ -116,6 +116,16 @@ module Core(
 			data_in = r1_out;
 			r_in = data_out;
 			r_w = 1'd0;
+			r1 = inst_reg1;
+			r2 = inst_reg2;
+		end
+		else if(state == loadi2)
+		begin
+			memory_addr = PC;
+			write = 1'd0;
+			data_in = r1_out;
+			r_in = data_out;
+			r_w = 1'd1;
 			r1 = inst_reg1;
 			r2 = inst_reg2;
 		end
@@ -165,6 +175,11 @@ module Core(
 					end
 					storeR:
 						state <= storeR2;
+					loadi:
+					begin
+						PC <= PC + 15'd1;
+						state <= loadi2;
+					end
 					//move, _not, _and, _or, shiftr, shiftl, add, sub, test:
 					//	state <= ALU2;
 					//jmpEq, jmpLE, jmpGE, jmpL, jmpG, jmp, call, jmpNE:
@@ -231,6 +246,8 @@ module Core(
 			//	PC <= PC + 15'd1;
 			//	state <= fetch;
 			//end
+			loadi2:
+				state <= fetch;
 			storeR2:
 			begin
 				state <= storeR3;
