@@ -20,8 +20,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 module ComputerV1(
 		input external_clk,
-		input ps2_data,
-		input ps2_clk,
+		//input ps2_data,
+		//input ps2_clk,
 		output h_sync,
 		output v_sync,
 		output [7:0] color_out
@@ -40,6 +40,6 @@ module ComputerV1(
 		
 		Memory_Top Memory_Module(clk, vga_addr, proc_data_in, w, memory_addr, vga_data, proc_data_out);
 
-		Dispatch Dispatch1(clk, ps2_data, ps2_clk, proc_data_out, proc_data_in, memory_addr, w);
+		Dispatch Dispatch1(clk, /*ps2_data, ps2_clk, */proc_data_out, proc_data_in, memory_addr, w);
 
 endmodule

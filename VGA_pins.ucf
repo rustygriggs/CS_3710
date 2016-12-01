@@ -299,9 +299,9 @@ NET "v_sync" IOSTANDARD = LVCMOS33;
 
 # PlanAhead Generated physical constraints 
 
-NET "ps2_clk" LOC = L12;
-NET "ps2_data" LOC = J13;
+//NET "ps2_clk" LOC = L12;
+//NET "ps2_data" LOC = J13;
 
 # PlanAhead Generated IO constraints 
 
-NET "ps2_data" IOSTANDARD = LVCMOS33;
+//NET "ps2_data" IOSTANDARD = LVCMOS33;
