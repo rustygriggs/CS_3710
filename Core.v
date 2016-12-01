@@ -162,6 +162,16 @@ module Core(
 			r1 = 5'd9;
 			r2 = inst_reg2;
 		end
+		else if(state == jmp2)
+		begin 
+			memory_addr = PC;
+			write = 1'd0;
+			data_in = r1_out;
+			r_in = data_out;
+			r_w = 1'd0;
+			r1 = 5'd9;
+			r2 = inst_reg2;
+		end
 	end
 	
 	always@(posedge clk)
@@ -207,18 +217,17 @@ module Core(
 						state <= ALU2;
 					test:
 						state <= test2;
-					//jmpEq, jmpLE, jmpGE, jmpL, jmpG, jmp, call, jmpNE:
-					//	begin
-					//	begin
-					//	if(data_out[5:0] == call)
-					//		PCP <= PC;
-					//	ns <= jmp2;
-					//	end
-					//jmpF:
-					//begin
-					//	if(data_out[5:0] == jmpF)
-					//		PC <= PCP + 15'd1;
-					//end			
+					jmpEq, jmpNE, jmpLE, jmpGE, jmpL, jmpG, jmp, call:
+					begin
+						if(data_out[5:0] == call)
+							PCP <= PC;	
+						state <= jmp2;
+					end
+					jmpF:
+					begin
+						PC <= PCP;
+						state <= fetch;
+					end			
 					//push:
 					//	ns <= push2;
 					//pop:
@@ -228,44 +237,44 @@ module Core(
 					//end
 				endcase
 			end
-			//jmp2:
-			//begin
-			//	case(opcode)
-			//		jmpEq:
-//					begin
-//						if(r1_out == 0)
-//							PC <= data_out[14:0];
-//					end
-//					jmpNE:
-//					begin
-//						if(r1_out != 0)
-//							PC <= data_out[14:0];
-//					end
-//					jmpGE:
-//					begin
-//						if(r1_out >= 0)
-//							PC <= data_out[14:0];
-//					end
-//					jmpLE:
-//					begin
-//						if(r1_out <= 0)
-//							PC <= data_out[14:0];
-//					end
-//					jmpL:
-//					begin
-//						if(r1_out < 0)
-//							PC <= data_out[14:0];
-//					end
-//					jmpG:
-//					begin
-//						if(r1_out > 0)
-//							PC <= data_out[14:0];
-//					end
-//					default:
-//						PC <= data_out[14:0];
-//				endcase
-//				ns	<= fetch;
-//			end
+			jmp2:
+			begin
+				case(opcode)
+					jmpEq:
+					begin
+						if(r1_out == 0)
+							PC <= data_out[14:0];
+					end
+					jmpNE:
+					begin
+						if(r1_out != 0)
+							PC <= data_out[14:0];
+					end
+					jmpGE:
+					begin
+						if(r1_out >= 0)
+							PC <= data_out[14:0];
+					end
+					jmpLE:
+					begin
+						if(r1_out <= 0)
+							PC <= data_out[14:0];
+					end
+					jmpL:
+					begin
+						if(r1_out < 0)
+							PC <= data_out[14:0];
+					end
+					jmpG:
+					begin
+						if(r1_out > 0)
+							PC <= data_out[14:0];
+					end
+					default:
+						PC <= data_out[14:0];
+				endcase
+				state	<= fetch;
+			end
 			ALU2:
 			begin
 				state <= fetch;
