@@ -75,11 +75,11 @@ module Core(
 	parameter _not = 6'd6, _and = 6'd7, _or = 6'd8, shiftr = 6'd9, shiftl = 6'd10, add = 6'd11;
    parameter sub = 6'd12, test = 6'd13, jmpEq = 6'd14, jmpNE = 6'd15, jmpLE = 6'd16, jmpGE = 6'd17;
 	parameter jmpL = 6'd18, jmpG = 6'd19, jmpF = 6'd20, jmp = 6'd21, call = 6'd22, push = 6'd23;
-   parameter pop = 6'd24, reset = 6'd25;
+   parameter pop = 6'd24, reset = 6'd25, loadR = 6'd26;
 	
 	parameter fetch = 6'd0, inst = 6'd1, load2 = 6'd2, load3 = 6'd3, store2 = 6'd4, loadi2 = 6'd5;
 	parameter storeR2 = 6'd6, ALU2 = 6'd7, jmp2 = 6'd8, push2 = 6'd9, pop2 = 6'd10, pop3 = 6'd11;
-	parameter test2 = 6'd12, test3 = 6'd13;
+	parameter test2 = 6'd12, test3 = 6'd13, loadR2 = 6'd14, loadR3 = 6'd15;
 	
 	always@(*)
 	begin
@@ -98,6 +98,26 @@ module Core(
 			data_in = r1_out;
 			r_in = data_out;
 			r_w = 1'd0;
+			r1 = inst_reg1;
+			r2 = inst_reg2;
+		end
+		if(state == loadR2)
+		begin
+			memory_addr = r2_out[14:0];
+			write = 1'd0;
+			data_in = r1_out;
+			r_in = data_out;
+			r_w = 1'd0;
+			r1 = inst_reg1;
+			r2 = inst_reg2;
+		end
+		if(state == loadR3)
+		begin
+			memory_addr = PC;
+			write = 1'd0;
+			data_in = r1_out;
+			r_in = data_out;
+			r_w = 1'd1;
 			r1 = inst_reg1;
 			r2 = inst_reg2;
 		end
@@ -213,6 +233,10 @@ module Core(
 						PC <= PC + 15'd1;
 						state <= loadi2;
 					end
+					loadR:
+					begin
+						state <= loadR2;
+					end
 					move, _not, _and, _or, shiftr, shiftl, add, sub:
 						state <= ALU2;
 					test:
@@ -274,6 +298,14 @@ module Core(
 						PC <= data_out[14:0];
 				endcase
 				state	<= fetch;
+			end
+			loadR2:
+			begin
+				state <= loadR3;
+			end
+			loadR3:
+			begin
+				state <= fetch;
 			end
 			ALU2:
 			begin

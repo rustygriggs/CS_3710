@@ -65,8 +65,8 @@ module Registers(
 							register2 == R7 ? reg7:
 							register2 == R8 ? reg8:
 							register2 == CMP ? cmp: 
-							register1 == R_Str ? rst: 
-							register1 == R_Scr ? rsc: sp;
+							register2 == R_Str ? rst: 
+							register2 == R_Scr ? rsc: sp;
 	
 	always@(posedge clk)
 	begin
