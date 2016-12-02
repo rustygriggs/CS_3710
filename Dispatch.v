@@ -20,8 +20,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 module Dispatch(
 	input clk,
-	//input ps2_data,
-	//input ps2_clk,
+	input ps2_data,
+	input ps2_clk,
 	input [15:0]data_out,
 	output [15:0]data_in,
 	output [14:0]mem_addr,
@@ -36,16 +36,19 @@ module Dispatch(
 	wire [15:0]core_data_in;
 	wire core_w;
 	wire [14:0]core_mem_addr;
+	wire [15:0]core_data_out;
 	
-	//wire [7:0]char;
+	wire [7:0]char;
 	
-	Core Core_Module(clk, data_out, core_data_in, core_mem_addr, core_w);
-	//Core Core2(clk, data_out, core_data_in, core_mem_addr, core_write, resume); 
-	//IO_Module IO(clk, ps2_data, ps2_clk, char); 
+	Core Core_Module(clk, core_data_out, core_data_in, core_mem_addr, core_w);
+	 
+	Keyboard Keyboard_Module(ps2_data, ps2_clk, char); 
 	
-	assign mem_addr = core_mem_addr;//resume ? core_mem_addr : dispatch_mem_addr;
-	assign write = core_w;//resume ? core_w : 1'd0;
-	assign data_in = core_data_in;//resume ? core_data_in : dispatch_data_in;
+	assign mem_addr = core_mem_addr;
+	assign write = core_w;
+	assign data_in = core_data_in;
+	
+	assign core_data_out = (core_mem_addr == 15'h7FFF) ? {8'h0, char} : data_out;
 	
 	
 	//always@(posedge clk)
