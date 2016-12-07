@@ -20,18 +20,30 @@
 //////////////////////////////////////////////////////////////////////////////////
 module ComputerV1(
 		input external_clk,
-		input ps2_data,
 		input ps2_clk,
+		input ps2_data,
+		input [7:0] sw,
+		input btnl,
 		output h_sync,
 		output v_sync,
-		output [7:0] color_out
+		output [7:0] color_out,
+		output [3:0] an,
+		output [7:0]seg
     );
 		wire internal_clk;
-		wire clk;
+		reg clk;
+		wire btn;
+		
+		always@(posedge external_clk)
+		begin
+			clk <= ~clk;
+		end
 		
 		// Clock Stuff
-		IBUFG pad_to_clock_logic(.I(external_clk), .O(internal_clk));
-		BUFG clock_logic_to_clk(.I(internal_clk), .O(clk));
+		//IBUFG pad_to_clock_logic(.I(external_clk), .O(internal_clk));
+		//BUFG clock_logic_to_clk(.I(internal_clk), .O(clk));
+
+		Debouncer Debounce_Module(external_clk, btnl, 1'd0, btn);
 
 		wire [15:0] vga_data, proc_data_in, proc_data_out;
 		wire [14:0] vga_addr, memory_addr;
@@ -40,6 +52,7 @@ module ComputerV1(
 		
 		Memory_Top Memory_Module(clk, vga_addr, proc_data_in, w, memory_addr, vga_data, proc_data_out);
 
-		Dispatch Dispatch1(clk, ps2_data, ps2_clk, proc_data_out, proc_data_in, memory_addr, w);
+		Dispatch Dispatch1(clk, ps2_clk, ps2_data, proc_data_out, sw, btn, proc_data_in, memory_addr, w, an, seg);
+
 
 endmodule

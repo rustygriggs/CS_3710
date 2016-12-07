@@ -19,8 +19,8 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module Keyboard(
-	input key_data,
 	input key_clk,
+	input key_data,
 	output [7:0] data_wire
     );
 
@@ -33,14 +33,14 @@ module Keyboard(
 	reg [7:0] ascii;
 	
 	initial begin
-	data_reg <= 8'hf0;
+	data_reg <= 8'hff;
 	data_count <= 4'h1;
-	data_curr <= 8'hf0;
-	data_prev <= 8'hf0;
+	data_curr <= 8'hff;
+	data_prev <= 8'hff;
 	shift <= 1'b0;
 	ascii <= 8'b0;
 	end
-	
+	 
 	always@(posedge key_clk) begin
 	
 		case(data_count)
@@ -80,7 +80,7 @@ module Keyboard(
 	end
 	
 	always@(*) begin
-	
+		
 		if (data_prev == 8'hF0)
 			ascii = 8'hFF;
 		else begin

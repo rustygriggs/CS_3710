@@ -22,7 +22,7 @@ module VGA_Output(
 	input clk,
 	input [9:0] pixel_counter,
 	input [9:0] line_counter,
-	input [1:0] pixel_state,
+	input pixel_state,
 	input [7:0] color_in,
 	output reg h_sync,
 	output reg v_sync,
@@ -36,7 +36,7 @@ module VGA_Output(
 //	 parameter VSYNC_START = 522;
 	 parameter V_SYNC_START = 489;
 	 parameter V_SYNC_END = 491;
-	 parameter PIXEL_ST_MAX = 3;
+	 parameter PIXEL_ST_MAX = 1;
 
 	always @ (posedge clk) begin
 			if (pixel_counter >= H_SYNC_START && pixel_counter < H_SYNC_END) //check this number

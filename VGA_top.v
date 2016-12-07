@@ -28,7 +28,7 @@ module VGA_Top(
 		);
 		
 		wire [9:0] line_counter;
-		wire [1:0] pixel_state;
+		wire pixel_state;
 		wire [9:0] pixel_counter;
 		wire active;
 		wire [7:0] color_intermediate;		
