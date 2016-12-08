@@ -74,7 +74,7 @@ module Core(
 	parameter _not = 6'd6, _and = 6'd7, _or = 6'd8, shiftr = 6'd9, shiftl = 6'd10, add = 6'd11;
    parameter sub = 6'd12, test = 6'd13, jmpEq = 6'd14, jmpNE = 6'd15, jmpLE = 6'd16, jmpGE = 6'd17;
 	parameter jmpL = 6'd18, jmpG = 6'd19, jmpF = 6'd20, jmp = 6'd21, call = 6'd22, push = 6'd23;
-   parameter pop = 6'd24, reset = 6'd25, loadR = 6'd26;
+   parameter pop = 6'd24, reset = 6'd25, loadR = 6'd26, cmpC = 6'd27;
 	
 	parameter fetch = 6'd0, inst = 6'd1, load2 = 6'd2, load3 = 6'd3, store2 = 6'd4, loadi2 = 6'd5;
 	parameter storeR2 = 6'd6, ALU2 = 6'd7, jmp2 = 6'd8, push2 = 6'd9, pop2 = 6'd10, pop3 = 6'd11;
@@ -220,7 +220,7 @@ module Core(
 			data_in = register1;
 			r_in = data;
 			r_w = 1'd1;
-			r1 = 5'd9;
+			r1 = 5'd28;
 			r2 = inst_reg2;
 		end
 		else if(state == jmp2)
@@ -230,7 +230,7 @@ module Core(
 			data_in = register1;
 			r_in = data;
 			r_w = 1'd0;
-			r1 = 5'd9;
+			r1 = 5'd28;
 			r2 = inst_reg2;
 		end
 		else if(state == pop2)
@@ -357,40 +357,35 @@ module Core(
 				end
 				jmp2:
 				begin
-					register1 <= r1_out;
-					state <= jmp3;
-				end
-				jmp3:
-				begin
 					case(opcode)
 						jmpEq:
 						begin
-							if(register1 == 0)
+							if(r1_out == 0)
 								PC <= data_out[14:0];
 						end
 						jmpNE:
 						begin
-							if(register1 != 0)
+							if(r1_out != 0)
 								PC <= data_out[14:0];
 						end
 						jmpGE:
 						begin
-							if(register1 >= 0)
+							if(r1_out >= 0)
 								PC <= data_out[14:0];
 						end
 						jmpLE:
 						begin
-							if(register1 <= 0)
+							if(r1_out <= 0)
 								PC <= data_out[14:0];
 						end
 						jmpL:
 						begin
-							if(register1 < 0)
+							if(r1_out < 0)
 								PC <= data_out[14:0];
 						end
 						jmpG:
 						begin
-							if(register1 > 0)
+							if(r1_out > 0)
 								PC <= data_out[14:0];
 						end
 						default:

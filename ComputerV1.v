@@ -33,17 +33,19 @@ module ComputerV1(
 		wire internal_clk;
 		reg clk;
 		wire btn;
+		//wire clk_50;
 		
 		always@(posedge external_clk)
 		begin
 			clk <= ~clk;
 		end
 		
+		//clk_50MHz Clock_Module(external_clk, clk_50);
 		// Clock Stuff
 		//IBUFG pad_to_clock_logic(.I(external_clk), .O(internal_clk));
 		//BUFG clock_logic_to_clk(.I(internal_clk), .O(clk));
 
-		Debouncer Debounce_Module(external_clk, btnl, 1'd0, btn);
+		Debouncer Debounce_Module(clk, btnl, 1'd0, btn);
 
 		wire [15:0] vga_data, proc_data_in, proc_data_out;
 		wire [14:0] vga_addr, memory_addr;
