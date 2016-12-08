@@ -357,36 +357,53 @@ module Core(
 				end
 				jmp2:
 				begin
+					register1 <= r1_out;
+					state <= jmp3;
+				end
+				jmp3:
+				begin
 					case(opcode)
 						jmpEq:
 						begin
-							if(r1_out == 0)
+							if(register1 == 0)
 								PC <= data_out[14:0];
+							else
+								PC <= PC + 1'd1;
 						end
 						jmpNE:
 						begin
-							if(r1_out != 0)
+							if(register1 != 0)
 								PC <= data_out[14:0];
+							else
+								PC <= PC + 1'd1;
 						end
 						jmpGE:
 						begin
-							if(r1_out >= 0)
+							if(register1 >= 0)
 								PC <= data_out[14:0];
+							else
+								PC <= PC + 1'd1;
 						end
 						jmpLE:
 						begin
-							if(r1_out <= 0)
+							if(register1[15] == 1 || register1 == 0)
 								PC <= data_out[14:0];
+							else
+								PC <= PC + 1'd1;
 						end
 						jmpL:
 						begin
-							if(r1_out < 0)
+							if(register1[15] == 1)
 								PC <= data_out[14:0];
+							else
+								PC <= PC + 1'd1;
 						end
 						jmpG:
 						begin
-							if(r1_out > 0)
+							if(register1 > 0)
 								PC <= data_out[14:0];
+							else
+								PC <= PC + 1'd1;
 						end
 						default:
 							PC <= data_out[14:0];
