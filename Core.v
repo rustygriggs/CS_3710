@@ -32,7 +32,7 @@ module Core(
 	parameter N = 6; // number of clock cycles. May want more if instructions take longer
 	reg [N-1:0] state = fetch;
 	reg [14:0] PC = 15'h2400;
-	reg [14:0] SP = 15'h3000;
+	reg [14:0] SP = 15'h6000;
 	reg [14:0] PCP;
 	reg [5:0]opcode;
 	reg [4:0] inst_reg1;
@@ -81,7 +81,7 @@ module Core(
 	parameter test2 = 6'd12, test3 = 6'd13, loadR2 = 6'd14, loadR3 = 6'd15, load4 = 6'd16, store3 = 6'd17;
 	parameter load5 = 6'd18, loadR4 = 6'd19, loadR5 = 6'd20, jmp3 = 6'd21, ALU3 = 6'd22, ALU4 = 6'd24;
 	parameter storeR3 = 6'd25, loadi3 = 6'd26, test4 = 6'd27, pop4 = 6'd28, push3 = 6'd29, fetch2 = 6'd30;
-	parameter storeR4 = 6'd31, store4 = 6'd32;
+	parameter storeR4 = 6'd31, store4 = 6'd32, cmpC2 = 6'd34, cmpC3 = 6'd35, cmpC4 = 6'd36;
 	
 	always@(*)
 	begin
@@ -223,6 +223,16 @@ module Core(
 			r1 = 5'd28;
 			r2 = inst_reg2;
 		end
+		else if(state == cmpC4)
+		begin 
+			memory_addr = PC;
+			write = 1'd0;
+			data_in = register1;
+			r_in = data;
+			r_w = 1'd1;
+			r1 = 5'd28;
+			r2 = inst_reg2;
+		end
 		else if(state == jmp2)
 		begin 
 			memory_addr = PC;
@@ -264,282 +274,292 @@ module Core(
 			r2 = inst_reg2;
 		end
 	end
-	
-	//reg core_state = 0;
-	
-	//always@(posedge clk)
-	//begin
-	//	core_state <= ~core_state;
-	//end
-	
+
 	always@(posedge clk)
 	begin
-		//if(core_state == 2'd3)
-		//begin
-			case(state)
-				fetch:
+		case(state)
+			fetch:
+			begin
+				if(debug_btn || debug_sw[5])
 				begin
-					if(debug_btn || debug_sw[5])
-					begin
-						PC <= PC + 1'd1;
-						state <= inst;
-					end
-					else
+					PC <= PC + 1'd1;
+					state <= inst;
+				end
+				else
+				begin
+					state <= fetch;
+				end
+			end
+			inst:
+			begin
+				opcode = data_out[5:0];
+				inst_reg1 = data_out[10:6];
+				inst_reg2 = data_out[15:11];
+				instruction = data_out[15:0];
+				case(opcode)
+					nop:
 					begin
 						state <= fetch;
 					end
-				end
-				inst:
-				begin
-					opcode = data_out[5:0];
-					inst_reg1 = data_out[10:6];
-					inst_reg2 = data_out[15:11];
-					instruction = data_out[15:0];
-					case(opcode)
-						nop:
-						begin
-							state <= fetch;
-						end
-						reset:
-						begin
-							PC <= 15'h2400;
-							state <= fetch;
-						end
-						load:
-						begin
-							state <= load2;
-						end
-						loadi:
-						begin
-							state <= loadi2;
-						end
-						store:
-						begin 
-							state <= store2;
-						end
-						storeR:
-						begin
-							state <= storeR2;
-						end
-						loadR:
-						begin
-							state <= loadR2;
-						end
-						move, _not, _and, _or, shiftr, shiftl, add, sub:
-						begin
-							state <= ALU2;
-						end
-						test:
-						begin
-							state <= test2;
-						end
-						jmpEq, jmpNE, jmpLE, jmpGE, jmpL, jmpG, jmp, call:
-						begin
-							if(opcode == call)
-								PCP <= PC + 1'd1;	
-							state <= jmp2;
-						end
-						jmpF:
-						begin
-							PC <= PCP;
-							state <= fetch;
-						end			
-						push:
-						begin
-							state <= push2;
-						end
-						pop:
-						begin
-							SP <= SP - 15'd1;
-							state <= pop2;
-						end
-					endcase
-				end
-				jmp2:
-				begin
-					register1 <= r1_out;
-					state <= jmp3;
-				end
-				jmp3:
-				begin
-					case(opcode)
-						jmpEq:
-						begin
-							if(register1 == 0)
-								PC <= data_out[14:0];
-							else
-								PC <= PC + 1'd1;
-						end
-						jmpNE:
-						begin
-							if(register1 != 0)
-								PC <= data_out[14:0];
-							else
-								PC <= PC + 1'd1;
-						end
-						jmpGE:
-						begin
-							if(register1 >= 0)
-								PC <= data_out[14:0];
-							else
-								PC <= PC + 1'd1;
-						end
-						jmpLE:
-						begin
-							if(register1[15] == 1 || register1 == 0)
-								PC <= data_out[14:0];
-							else
-								PC <= PC + 1'd1;
-						end
-						jmpL:
-						begin
-							if(register1[15] == 1)
-								PC <= data_out[14:0];
-							else
-								PC <= PC + 1'd1;
-						end
-						jmpG:
-						begin
-							if(register1 > 0)
-								PC <= data_out[14:0];
-							else
-								PC <= PC + 1'd1;
-						end
-						default:
+					reset:
+					begin
+						PC <= 15'h2400;
+						state <= fetch;
+					end
+					load:
+					begin
+						state <= load2;
+					end
+					loadi:
+					begin
+						state <= loadi2;
+					end
+					store:
+					begin 
+						state <= store2;
+					end
+					storeR:
+					begin
+						state <= storeR2;
+					end
+					loadR:
+					begin
+						state <= loadR2;
+					end
+					move, _not, _and, _or, shiftr, shiftl, add, sub:
+					begin
+						state <= ALU2;
+					end
+					cmpC:
+					begin
+						state <= cmpC2;
+					end
+					test:
+					begin
+						state <= test2;
+					end
+					jmpEq, jmpNE, jmpLE, jmpGE, jmpL, jmpG, jmp, call:
+					begin
+						if(opcode == call)
+							PCP <= PC + 1'd1;	
+						state <= jmp2;
+					end
+					jmpF:
+					begin
+						PC <= PCP;
+						state <= fetch;
+					end			
+					push:
+					begin
+						state <= push2;
+					end
+					pop:
+					begin
+						SP <= SP - 15'd1;
+						state <= pop2;
+					end
+				endcase
+			end
+			jmp2:
+			begin
+				register1 <= r1_out;
+				state <= jmp3;
+			end
+			jmp3:
+			begin
+				case(opcode)
+					jmpEq:
+					begin
+						if(register1 == 0)
 							PC <= data_out[14:0];
-					endcase
-					state	<= fetch;
-				end
-				ALU2:
-				begin
-					register1 <= r1_out;
-					register2 <= r2_out;
-					state <= ALU3;
-				end
-				ALU3:
-				begin
-					data <= ALU_out;
-					state <= ALU4;
-				end
-				ALU4:
-				begin
-					state <= fetch;
-				end
-				test2:
-				begin
-					register1 <= r1_out;
-					register2 <= r2_out;
-					state <= test3;
-				end
-				test3:
-				begin
-					data <= ALU_out;
-					state <= test4;
-				end
-				test4:
-				begin
-					state <= fetch;
-				end
-				load2:
-				begin
-					PC <= PC + 15'd1;
-					addr <= data_out[14:0];
-					state <= load3;
-				end
-				load3:
-				begin
-					state <= load4;
-				end
-				load4:
-				begin
-					data <= data_out;
-					state <= load5;
-				end
-				load5:
-				begin
-					state <= fetch;
-				end
-				loadi2:
-				begin
-					PC <= PC + 15'd1;
-					data <= data_out;
-					state <= loadi3;
-				end
-				loadi3:
-				begin
-					state <= fetch;
-				end
-				loadR2:
-				begin
-					addr <= r2_out[14:0];
-					state <= loadR3;
-				end
-				loadR3:
-				begin
-					state <= loadR4;
-				end
-				loadR4:
-				begin
-					data <= data_out;
-					state <= loadR5;
-				end
-				loadR5:
-				begin
-					state <= fetch;
-				end
-				store2:
-				begin
-					PC <= PC + 15'd1;
-					addr <= data_out[14:0];
-					register1 <= r1_out;
-					state <= store3;
-				end
-				store3:
-				begin
-					state <= store4;
-				end
-				store4:
-				begin
-					state <= fetch;
-				end
-				storeR2:
-				begin
-					register1 <= r1_out;
-					addr <= r2_out[14:0];
-					state <= storeR3;
-				end
-				storeR3:
-				begin
-					state <= storeR4;
-				end
-				storeR4:
-				begin
-					state <= fetch;
-				end
-				pop2:
-				begin
-					state <= pop3;
-				end
-				pop3:
-				begin
-					data <= data_out;
-					state <= pop4;
-				end
-				pop4:
-				begin
-					state <= fetch;
-				end
-				push2:
-				begin
-					register1 <= r1_out;
-					state <= push3;
-				end
-				push3:
-				begin
-					SP <= SP + 15'd1;
-					state <= fetch;
-				end
-			endcase
-		//end
+						else
+							PC <= PC + 1'd1;
+					end
+					jmpNE:
+					begin
+						if(register1 != 0)
+							PC <= data_out[14:0];
+						else
+							PC <= PC + 1'd1;
+					end
+					jmpGE:
+					begin
+						if(register1 >= 0)
+							PC <= data_out[14:0];
+						else
+							PC <= PC + 1'd1;
+					end
+					jmpLE:
+					begin
+						if(register1[15] == 1 || register1 == 0)
+							PC <= data_out[14:0];
+						else
+							PC <= PC + 1'd1;
+					end
+					jmpL:
+					begin
+						if(register1[15] == 1)
+							PC <= data_out[14:0];
+						else
+							PC <= PC + 1'd1;
+					end
+					jmpG:
+					begin
+						if(register1 > 0)
+							PC <= data_out[14:0];
+						else
+							PC <= PC + 1'd1;
+					end
+					default:
+						PC <= data_out[14:0];
+				endcase
+				state	<= fetch;
+			end
+			cmpC2:
+			begin
+				register1 <= r1_out;
+				register2 <= data_out;
+				state <= cmpC3;
+			end
+			cmpC3:
+			begin
+				data <= ALU_out;
+				state <= cmpC4;
+			end
+			cmpC4:
+			begin
+				PC <= PC + 1'd1;
+				state <= fetch;
+			end
+			ALU2:
+			begin
+				register1 <= r1_out;
+				register2 <= r2_out;
+				state <= ALU3;
+			end
+			ALU3:
+			begin
+				data <= ALU_out;
+				state <= ALU4;
+			end
+			ALU4:
+			begin
+				state <= fetch;
+			end
+			test2:
+			begin
+				register1 <= r1_out;
+				register2 <= r2_out;
+				state <= test3;
+			end
+			test3:
+			begin
+				data <= ALU_out;
+				state <= test4;
+			end
+			test4:
+			begin
+				state <= fetch;
+			end
+			load2:
+			begin
+				PC <= PC + 15'd1;
+				addr <= data_out[14:0];
+				state <= load3;
+			end
+			load3:
+			begin
+				state <= load4;
+			end
+			load4:
+			begin
+				data <= data_out;
+				state <= load5;
+			end
+			load5:
+			begin
+				state <= fetch;
+			end
+			loadi2:
+			begin
+				PC <= PC + 15'd1;
+				data <= data_out;
+				state <= loadi3;
+			end
+			loadi3:
+			begin
+				state <= fetch;
+			end
+			loadR2:
+			begin
+				addr <= r2_out[14:0];
+				state <= loadR3;
+			end
+			loadR3:
+			begin
+				state <= loadR4;
+			end
+			loadR4:
+			begin
+				data <= data_out;
+				state <= loadR5;
+			end
+			loadR5:
+			begin
+				state <= fetch;
+			end
+			store2:
+			begin
+				PC <= PC + 15'd1;
+				addr <= data_out[14:0];
+				register1 <= r1_out;
+				state <= store3;
+			end
+			store3:
+			begin
+				state <= store4;
+			end
+			store4:
+			begin
+				state <= fetch;
+			end
+			storeR2:
+			begin
+				register1 <= r1_out;
+				addr <= r2_out[14:0];
+				state <= storeR3;
+			end
+			storeR3:
+			begin
+				state <= storeR4;
+			end
+			storeR4:
+			begin
+				state <= fetch;
+			end
+			pop2:
+			begin
+				state <= pop3;
+			end
+			pop3:
+			begin
+				data <= data_out;
+				state <= pop4;
+			end
+			pop4:
+			begin
+				state <= fetch;
+			end
+			push2:
+			begin
+				register1 <= r1_out;
+				state <= push3;
+			end
+			push3:
+			begin
+				SP <= SP + 15'd1;
+				state <= fetch;
+			end
+		endcase
 	end
 endmodule
