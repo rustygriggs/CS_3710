@@ -34,6 +34,8 @@
 // supported by Xilinx, Mentor Graphics and Synplicity synthesis
 // tools. Ensure they are correct for your synthesis tool(s).
 
+//synthesis attribute box_type <block_ram1> "black_box"
+
 `timescale 1ns/1ps
 
 module Block_Ram1(

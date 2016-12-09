@@ -417,6 +417,7 @@ module Core(
 			end
 			cmpC2:
 			begin
+				PC <= PC + 1'd1;
 				register1 <= r1_out;
 				register2 <= data_out;
 				state <= cmpC3;
@@ -428,7 +429,6 @@ module Core(
 			end
 			cmpC4:
 			begin
-				PC <= PC + 1'd1;
 				state <= fetch;
 			end
 			ALU2:
