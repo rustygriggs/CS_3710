@@ -192,6 +192,8 @@ module Keyboard(
 					ascii = 8'h9;
 				else if (data_reg == 8'h5A)//Enter
 					ascii = 8'hD;
+				else if (data_reg == 8'h76)//ESC
+					ascii = 8'h1B;
 				
 				else if (data_reg == 8'hF0)//End bit for signal/release of key
 					ascii = 8'hFF;
@@ -305,6 +307,8 @@ module Keyboard(
 					ascii = 8'h9;
 				else if (data_reg == 8'h5A)//Enter
 					ascii = 8'hD;
+				else if (data_reg == 8'h76)//ESC
+					ascii = 8'h1B;
 				
 				else if (data_reg == 8'hF0)//End bit for signal/release of key
 					ascii = 8'hFF;
